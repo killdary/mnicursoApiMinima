@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using MiniTodo.Data;
 using MiniTodo.model;
 
+#region Services
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -15,6 +16,10 @@ builder.Services.AddDbContext<MinimalContextDb>(optioons =>
 
 var app = builder.Build();
 
+#endregion
+
+
+#region Configure Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -22,6 +27,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 
 app.MapGet("/produto", async (MinimalContextDb context) => await context.Produtos.ToListAsync())
     .WithName("GetProduto")
@@ -94,7 +100,9 @@ app.MapDelete("/produto/{id}",
     .Produces<Produto>(StatusCodes.Status204NoContent)
     .Produces(StatusCodes.Status400BadRequest)
     .Produces(StatusCodes.Status404NotFound)
-    .WithName("EditandoProduto")
+    .WithName("DeletandoProduto")
     .WithTags("Produtos");
 
 app.Run();
+#endregion
+
